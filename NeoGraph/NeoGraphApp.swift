@@ -11,7 +11,7 @@ import SwiftUI
 struct NeoGraphApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NeoGraphView()
         }
     }
 }
