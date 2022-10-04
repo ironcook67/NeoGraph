@@ -14,10 +14,9 @@ enum Theme {
 	static let accent = Color("AccentColor")
 }
 
-// MARK: - Networking Errors
-
-enum NetworkError: Error {
-	case invalidURL
-	case invalidResponse
-	case invalidData
-}
+//// MARK: - Networking Errors
+//enum NetworkError: Error {
+//	case invalidURL
+//	case invalidResponse
+//	case invalidData
+//}

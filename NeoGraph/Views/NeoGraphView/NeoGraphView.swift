@@ -30,7 +30,7 @@ struct NeoGraphView: View {
 				Chart {
 					ForEach(viewModel.neos) { neo in
 						PointMark(
-							x: .value("spread", Int.random(in: 0...100)),
+							x: .value("spread", neo.closestApproachDateFull!.timeIntervalSince(Calendar.current.startOfDay(for: neo.closestApproachDateFull!))), // Int.random(in: 0...100)),
 							y: .value("distance", neo.missDistanceKm)
 						)
 					}
@@ -46,7 +46,10 @@ struct NeoGraphView: View {
 			}
 		}
 		.task {
-			viewModel.loadData()
+			await viewModel.loadData()
+		}
+		.onDisappear {
+			viewModel.saveCacheToDisk()
 		}
     }
 }

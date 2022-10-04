@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D01376B28EC372E00B4E667 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01376A28EC372E00B4E667 /* Cache.swift */; };
+		4D01376D28EC388A00B4E667 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01376C28EC388A00B4E667 /* CacheManager.swift */; };
+		4D01377028EC44B200B4E667 /* APIServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01376F28EC44B200B4E667 /* APIServices.swift */; };
+		4D01377228EC453A00B4E667 /* NASAURLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01377128EC453A00B4E667 /* NASAURLBuilder.swift */; };
 		4D5575C528EAB42600AA64CC /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5575C428EAB42600AA64CC /* Environment.swift */; };
 		4D5575C828EAB5E500AA64CC /* DateFormatter+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5575C728EAB5E500AA64CC /* DateFormatter+Ext.swift */; };
 		4D5575CF28EAC26500AA64CC /* NeoGraphViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5575CE28EAC26500AA64CC /* NeoGraphViewModel.swift */; };
@@ -23,6 +27,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4D01376A28EC372E00B4E667 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		4D01376C28EC388A00B4E667 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
+		4D01376F28EC44B200B4E667 /* APIServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServices.swift; sourceTree = "<group>"; };
+		4D01377128EC453A00B4E667 /* NASAURLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NASAURLBuilder.swift; sourceTree = "<group>"; };
 		4D5575C428EAB42600AA64CC /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		4D5575C728EAB5E500AA64CC /* DateFormatter+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Ext.swift"; sourceTree = "<group>"; };
 		4D5575CE28EAC26500AA64CC /* NeoGraphViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoGraphViewModel.swift; sourceTree = "<group>"; };
@@ -52,6 +60,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4D01376928EC371E00B4E667 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				4D01376A28EC372E00B4E667 /* Cache.swift */,
+				4D01376C28EC388A00B4E667 /* CacheManager.swift */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
+		4D01376E28EC44A100B4E667 /* Network Services */ = {
+			isa = PBXGroup;
+			children = (
+				4D01376F28EC44B200B4E667 /* APIServices.swift */,
+				4D01377128EC453A00B4E667 /* NASAURLBuilder.swift */,
+			);
+			path = "Network Services";
+			sourceTree = "<group>";
+		};
 		4D5575C628EAB5CD00AA64CC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +110,8 @@
 				4DE3061928E6D18D005D756F /* Environment */,
 				4DE3060928E6C7C6005D756F /* Utilitites */,
 				4DE3060C28E6C8D7005D756F /* Model */,
+				4D01376E28EC44A100B4E667 /* Network Services */,
+				4D01376928EC371E00B4E667 /* Cache */,
 				4DE3061728E6D174005D756F /* Views */,
 				4DE305F728E6C480005D756F /* NeoGraphApp.swift */,
 				4DE305FD28E6C482005D756F /* NeoGraph.entitlements */,
@@ -217,15 +245,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D01377028EC44B200B4E667 /* APIServices.swift in Sources */,
 				4D5575C828EAB5E500AA64CC /* DateFormatter+Ext.swift in Sources */,
 				4DB19BD628E7BFCC00082441 /* NeoService.swift in Sources */,
 				4DE3061028E6CE90005D756F /* NeoContainer.swift in Sources */,
 				4DE305FA28E6C480005D756F /* NeoGraphView.swift in Sources */,
+				4D01376D28EC388A00B4E667 /* CacheManager.swift in Sources */,
+				4D01376B28EC372E00B4E667 /* Cache.swift in Sources */,
 				4DE305F828E6C480005D756F /* NeoGraphApp.swift in Sources */,
 				4DE3060E28E6C903005D756F /* Neo.swift in Sources */,
 				4DE3060B28E6C7D0005D756F /* Constants.swift in Sources */,
 				4D5575D328EAC50500AA64CC /* Bundle+Ext.swift in Sources */,
 				4D5575C528EAB42600AA64CC /* Environment.swift in Sources */,
+				4D01377228EC453A00B4E667 /* NASAURLBuilder.swift in Sources */,
 				4D5575CF28EAC26500AA64CC /* NeoGraphViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
