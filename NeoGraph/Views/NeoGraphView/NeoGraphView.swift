@@ -48,9 +48,6 @@ struct NeoGraphView: View {
 		.task {
 			await viewModel.loadData()
 		}
-		.onDisappear {
-			viewModel.saveCacheToDisk()
-		}
     }
 }
 

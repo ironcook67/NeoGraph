@@ -20,9 +20,5 @@ extension NeoGraphView {
 			currentPage = cacheManager.currentKey
 			neos = await cacheManager.getNeos(forDate: .now)
 		}
-
-		func saveCacheToDisk() {
-			cacheManager.saveCacheToDisk()
-		}
 	}
 }
