@@ -48,14 +48,12 @@ class CacheManager {
 			print("❌ Error - \(error.localizedDescription)")
 		}
 
-		// Dont do this.
-
-		saveCacheToDisk()
+		await saveCacheToDisk()
 
 		return neos!
 	}
 
-	func saveCacheToDisk() {
+	func saveCacheToDisk() async {
 		do {
 			try CurrentEnvironment.neoCache.saveToDisk(withName: CacheConstants.neoCacheFilemame)
 		} catch {

@@ -25,9 +25,9 @@ struct Neo: Codable, Hashable, Identifiable {
 }
 
 extension Neo {
-//	var averageDiameter: Double {
-//		(esitmatedDiameterMin + estimatedDiameterMaxKm).value / 2.0
-//	}
+	var averageDiameter: Measurement<UnitLength> {
+		(esitmatedDiameterMin + estimatedDiameterMax) / 2.0
+	}
 }
 
 
