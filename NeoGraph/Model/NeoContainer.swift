@@ -23,7 +23,7 @@ extension NeoContainer {
 			for neoData in neoDataPoints {
 				guard let closestApproachData = neoData.closestApproach.first else { continue }
 				let distance = Double(closestApproachData.missDistance.kilometers) ?? 0.0
-				let velocity = Double(closestApproachData.relativeVelocity.kps) ?? 0.0
+				let velocity = Double(closestApproachData.relativeVelocity.kph) ?? 0.0
 				let approachDateFull = nasaDateFormatter.date(from: closestApproachData.closeApproachDateFull)
 
 				let neo = Neo(id: neoData.id,
@@ -32,10 +32,10 @@ extension NeoContainer {
 							  closestApproachDate: closestApproachData.closeApproachDate,
 							  closestApproachDateFull: approachDateFull,
 							  magnitude: neoData.absoluteMagnitudeH,
-							  missDistanceKm: distance,
-							  relativeVelocityKPS: velocity,
-							  esitmatedDiameterMinKm: neoData.estimatedDiameter.kilometers.estimatedDiameterMin,
-							  estimatedDiameterMaxKm: neoData.estimatedDiameter.kilometers.estimatedDiameterMax,
+							  missDistance: Measurement(value: distance, unit: .kilometers),
+							  relativeVelocity: Measurement(value: velocity, unit: .kilometersPerHour),
+							  esitmatedDiameterMin: Measurement(value: neoData.estimatedDiameter.kilometers.estimatedDiameterMin, unit: .kilometers),
+							  estimatedDiameterMax: Measurement(value: neoData.estimatedDiameter.kilometers.estimatedDiameterMax, unit: .kilometers),
 							  isPotentiallyHazardous: neoData.isPotentiallyHazerdousAsteroid,
 							  isSentryObject: neoData.isSentryObject,
 							  URL: neoData.links.thisLink,

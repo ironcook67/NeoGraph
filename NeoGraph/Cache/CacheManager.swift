@@ -33,7 +33,7 @@ class CacheManager {
 		print("💣 Cache miss! \(cacheKey)")
 
 		// No neos in cache. Need to download.
-		let apiService = APIService(urlString: NASAURLBuilder.urlString())
+		let apiService = APIService(urlString: NASAURLBuilder.urlString(start: .now, end: .startOfTomorrow))
 		do {
 			let neoService: NeoService = try await apiService.getJSON()
 			let neoContainer = NeoContainer(from: neoService)

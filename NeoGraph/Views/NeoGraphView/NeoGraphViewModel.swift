@@ -19,22 +19,6 @@ extension NeoGraphView {
 			await cacheManager.loadCacheFromDisk()
 			currentPage = cacheManager.currentKey
 			neos = await cacheManager.getNeos(forDate: .now)
-
-
-//			// Get the data from the sample data
-//			let neoService = Bundle.main.decode(NeoService.self, from: "sample-data.json")
-//			let neoContainer = NeoContainer(from: neoService)
-//			guard let firstDate = neoContainer.neosByDay.first?.key else {
-//				print("Could not get sample data")
-//				return
-//			}
-//
-//			if neoContainer.neosByDay[firstDate] != nil {
-//				neos = neoContainer.neosByDay[firstDate]!
-//				currentPage = firstDate
-//			} else {
-//				neos = []
-//			}
 		}
 
 		func saveCacheToDisk() {

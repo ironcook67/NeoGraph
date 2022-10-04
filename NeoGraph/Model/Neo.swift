@@ -14,16 +14,20 @@ struct Neo: Codable, Hashable, Identifiable {
 	let closestApproachDate: String
 	let closestApproachDateFull: Date?
 	let magnitude: Double
-	let missDistanceKm: Double
-	let relativeVelocityKPS: Double
-	let esitmatedDiameterMinKm: Double
-	let estimatedDiameterMaxKm: Double
+	let missDistance: Measurement<UnitLength>
+	let relativeVelocity: Measurement<UnitSpeed>
+	let esitmatedDiameterMin: Measurement<UnitLength>
+	let estimatedDiameterMax: Measurement<UnitLength>
 	let isPotentiallyHazardous: Bool
 	let isSentryObject: Bool
 	let URL: String
 	let JPLURL: String
 }
 
-
+extension Neo {
+//	var averageDiameter: Double {
+//		(esitmatedDiameterMin + estimatedDiameterMaxKm).value / 2.0
+//	}
+}
 
 

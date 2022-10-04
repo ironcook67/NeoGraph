@@ -31,7 +31,7 @@ struct NeoGraphView: View {
 					ForEach(viewModel.neos) { neo in
 						PointMark(
 							x: .value("spread", neo.closestApproachDateFull!.timeIntervalSince(Calendar.current.startOfDay(for: neo.closestApproachDateFull!))), // Int.random(in: 0...100)),
-							y: .value("distance", neo.missDistanceKm)
+							y: .value("distance", PlottableLength(measurement: neo.missDistance))
 						)
 					}
 
