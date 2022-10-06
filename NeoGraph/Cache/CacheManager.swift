@@ -25,7 +25,7 @@ class CacheManager {
 		print("getNeos")
 		// See if there is an array of Neos for the passed date.
 		let cacheKey = keyFromDate(date)
-		var neos = CurrentEnvironment.neoCache.value(forKey: cacheKey)
+		var neos = appServices.neoCache.value(forKey: cacheKey)
 		if neos != nil {
 			print("✅ Cache hit! \(cacheKey)")
 			return neos!
@@ -42,7 +42,7 @@ class CacheManager {
 					neos = entry.value
 				}
 
-				CurrentEnvironment.neoCache.insert(entry.value, forKey: entry.key)
+				appServices.neoCache.insert(entry.value, forKey: entry.key)
 			}
 		} catch {
 			print("❌ Error - \(error.localizedDescription)")
@@ -55,7 +55,7 @@ class CacheManager {
 
 	func saveCacheToDisk() async {
 		do {
-			try CurrentEnvironment.neoCache.saveToDisk(withName: CacheConstants.neoCacheFilemame)
+			try appServices.neoCache.saveToDisk(withName: CacheConstants.neoCacheFilemame)
 		} catch {
 			print("saveCacheToDisk \(error.localizedDescription)")
 		}
@@ -66,16 +66,16 @@ class CacheManager {
 		//	If the Neo Cache file does not exist, clear out the Neop Cache.
 		// 	Remove old cached data.
 
-		let fileURL = CurrentEnvironment.neoCache.getCacheFileURL(name: CacheConstants.neoCacheFilemame, fileManager: FileManager.default)
+		let fileURL = appServices.neoCache.getCacheFileURL(name: CacheConstants.neoCacheFilemame, fileManager: FileManager.default)
 
 		// Clear the Neo Cache
-		CurrentEnvironment.neoCache.removeAll()
+		appServices.neoCache.removeAll()
 
 		// Read the Cache off of the disk.
 		do {
 			let data = try Data(contentsOf: fileURL)
 			let decoder = JSONDecoder()
-			CurrentEnvironment.neoCache = try decoder.decode(Cache<String, [Neo]>.self, from: data)
+			appServices.neoCache = try decoder.decode(Cache<String, [Neo]>.self, from: data)
 			
 		} catch {
 			print("loadCache \(error.localizedDescription)")

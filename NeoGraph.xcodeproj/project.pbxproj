@@ -14,7 +14,8 @@
 		4D01377828ECD72C00B4E667 /* PlottableLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01377728ECD72C00B4E667 /* PlottableLength.swift */; };
 		4D01377A28ECE22800B4E667 /* PlottableSpeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01377928ECE22800B4E667 /* PlottableSpeed.swift */; };
 		4D01377D28ECE43600B4E667 /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01377C28ECE43600B4E667 /* Date+Ext.swift */; };
-		4D5575C528EAB42600AA64CC /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5575C428EAB42600AA64CC /* Environment.swift */; };
+		4D01379328EE7CD700B4E667 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01379228EE7CD700B4E667 /* DataManager.swift */; };
+		4D5575C528EAB42600AA64CC /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5575C428EAB42600AA64CC /* Services.swift */; };
 		4D5575C828EAB5E500AA64CC /* DateFormatter+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5575C728EAB5E500AA64CC /* DateFormatter+Ext.swift */; };
 		4D5575CF28EAC26500AA64CC /* NeoGraphViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5575CE28EAC26500AA64CC /* NeoGraphViewModel.swift */; };
 		4D5575D328EAC50500AA64CC /* Bundle+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5575D228EAC50500AA64CC /* Bundle+Ext.swift */; };
@@ -37,7 +38,8 @@
 		4D01377728ECD72C00B4E667 /* PlottableLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlottableLength.swift; sourceTree = "<group>"; };
 		4D01377928ECE22800B4E667 /* PlottableSpeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlottableSpeed.swift; sourceTree = "<group>"; };
 		4D01377C28ECE43600B4E667 /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
-		4D5575C428EAB42600AA64CC /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		4D01379228EE7CD700B4E667 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		4D5575C428EAB42600AA64CC /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
 		4D5575C728EAB5E500AA64CC /* DateFormatter+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Ext.swift"; sourceTree = "<group>"; };
 		4D5575CE28EAC26500AA64CC /* NeoGraphViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoGraphViewModel.swift; sourceTree = "<group>"; };
 		4D5575D228EAC50500AA64CC /* Bundle+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Ext.swift"; sourceTree = "<group>"; };
@@ -93,6 +95,14 @@
 			path = Charts;
 			sourceTree = "<group>";
 		};
+		4D01379128EE7CC600B4E667 /* DataManager */ = {
+			isa = PBXGroup;
+			children = (
+				4D01379228EE7CD700B4E667 /* DataManager.swift */,
+			);
+			path = DataManager;
+			sourceTree = "<group>";
+		};
 		4D5575C628EAB5CD00AA64CC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +137,7 @@
 				4DE3060928E6C7C6005D756F /* Utilitites */,
 				4DE3060C28E6C8D7005D756F /* Model */,
 				4D01376E28EC44A100B4E667 /* Network Services */,
+				4D01379128EE7CC600B4E667 /* DataManager */,
 				4D01376928EC371E00B4E667 /* Cache */,
 				4D01377B28ECE31700B4E667 /* Charts */,
 				4DE3061728E6D174005D756F /* Views */,
@@ -186,7 +197,7 @@
 		4DE3061928E6D18D005D756F /* Environment */ = {
 			isa = PBXGroup;
 			children = (
-				4D5575C428EAB42600AA64CC /* Environment.swift */,
+				4D5575C428EAB42600AA64CC /* Services.swift */,
 			);
 			path = Environment;
 			sourceTree = "<group>";
@@ -269,6 +280,7 @@
 				4DE3061028E6CE90005D756F /* NeoContainer.swift in Sources */,
 				4DE305FA28E6C480005D756F /* NeoGraphView.swift in Sources */,
 				4D01376D28EC388A00B4E667 /* CacheManager.swift in Sources */,
+				4D01379328EE7CD700B4E667 /* DataManager.swift in Sources */,
 				4D01376B28EC372E00B4E667 /* Cache.swift in Sources */,
 				4D01377A28ECE22800B4E667 /* PlottableSpeed.swift in Sources */,
 				4D01377828ECD72C00B4E667 /* PlottableLength.swift in Sources */,
@@ -276,7 +288,7 @@
 				4DE3060E28E6C903005D756F /* Neo.swift in Sources */,
 				4DE3060B28E6C7D0005D756F /* Constants.swift in Sources */,
 				4D5575D328EAC50500AA64CC /* Bundle+Ext.swift in Sources */,
-				4D5575C528EAB42600AA64CC /* Environment.swift in Sources */,
+				4D5575C528EAB42600AA64CC /* Services.swift in Sources */,
 				4D01377228EC453A00B4E667 /* NASAURLBuilder.swift in Sources */,
 				4D5575CF28EAC26500AA64CC /* NeoGraphViewModel.swift in Sources */,
 			);

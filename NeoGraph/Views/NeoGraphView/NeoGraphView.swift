@@ -22,6 +22,7 @@ struct NeoGraphView: View {
 					Image("horizon")
 						.resizable()
 						.frame(height: 100)
+						.offset(y: 40)
 				}
 			}
 			.ignoresSafeArea()
@@ -30,15 +31,29 @@ struct NeoGraphView: View {
 				Chart {
 					ForEach(viewModel.neos) { neo in
 						PointMark(
-							x: .value("spread", neo.closestApproachDateFull!.timeIntervalSince(Calendar.current.startOfDay(for: neo.closestApproachDateFull!))), // Int.random(in: 0...100)),
+							x: .value("spread", neo.closestApproachDateFull!.timeIntervalSince(Calendar.current.startOfDay(for: neo.closestApproachDateFull!))),
 							y: .value("distance", PlottableLength(measurement: neo.missDistance))
 						)
 					}
 
-					RuleMark(y: .value("moon", lunarDistance))
-					PointMark(x: 100, y: .value("moon", lunarDistance))
-						.symbol(.circle)
-						.symbolSize(100.0)
+//					PointMark(x: -1, y: .value("earth", 1))
+//						.symbol(.cross)
+//						.symbolSize(0)
+
+					PointMark(x: -1, y: .value("moon", lunarDistance))
+						.symbol(.cross)
+						.symbolSize(0)
+				}
+				.chartOverlay { proxy in
+					GeometryReader { geoProxy in
+						if let yMoon = proxy.position(for: (0, 400_400)) {
+							let xMoon = geoProxy.size.width * 0.9
+							Image("moon")
+								.resizable()
+								.frame(width: 50, height: 50)
+								.position(CGPoint(x: xMoon, y: yMoon.y))
+						}
+					}
 				}
 				.chartYScale(domain: .automatic(includesZero: true, reversed: false), type: .log)
 				.chartXAxis(.hidden)
