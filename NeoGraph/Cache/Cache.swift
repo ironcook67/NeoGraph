@@ -131,6 +131,7 @@ extension Cache where Key: Codable, Value: Codable {
 		using fileManager: FileManager = .default
 	) throws {
 		let fileURL = getCacheFileURL(name: name, fileManager: fileManager)
+		print("Writing out cache: \(fileURL)")
 		let encoder = JSONEncoder()
 		let data = try encoder.encode(self)
 		try data.write(to: fileURL)

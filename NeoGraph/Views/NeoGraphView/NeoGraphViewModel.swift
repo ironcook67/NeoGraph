@@ -12,13 +12,12 @@ extension NeoGraphView {
 		@Published private(set) var currentPage: String?
 		@Published private(set) var neos = [Neo]()
 
-		private var cacheManager = CacheManager()
-
 		@MainActor
 		func loadData() async {
-			await cacheManager.loadCacheFromDisk()
-			currentPage = cacheManager.currentKey
-			neos = await cacheManager.getNeos(forDate: .now)
+//			neos = await appServices.cacheManager.getNeos()
+//			await appServices.cacheManager.loadCacheFromDisk()
+			currentPage = appServices.cacheManager.currentKey
+			neos = await appServices.cacheManager.getNeos(forDate: .now)
 		}
 	}
 }

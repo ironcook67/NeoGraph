@@ -21,13 +21,12 @@ class AppServices: Services {
 
 	init(calendar: Calendar = .autoupdatingCurrent,
 		 dataManager: DataManager = .init(),
-		 cacheManager: CacheManager = .init(),
-		 neoCache: Cache<String, [Neo]> = .init()) {
+		 cacheManager: CacheManager = .init()) {
 
 		self.calendar = calendar
 		self.dataManager = dataManager
 		self.cacheManager = cacheManager
-		self.neoCache = neoCache
+		self.neoCache = Cache<String, [Neo]>.init()
 	}
 }
 

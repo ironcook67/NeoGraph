@@ -19,8 +19,20 @@ extension Date {
 		Calendar.current.startOfDay(for: Date.now)
 	}
 
+	static var startOfYesterday: Date {
+		startOfToday.offsetBy(days: -1, seconds: 0)
+	}
+
 	static var startOfTomorrow: Date {
 		startOfToday.offsetBy(days: 1, seconds: 0)
+	}
+
+	static func startOfPreviousDay(for date: Date) -> Date {
+		Calendar.current.startOfDay(for: date).offsetBy(days: -1, seconds: 0)
+	}
+
+	static func startOfNextDay(for date: Date) -> Date {
+		Calendar.current.startOfDay(for: date).offsetBy(days: 1, seconds: 0)
 	}
 
 	static func startOfTheDay(for date: Date) -> Date {
