@@ -11,8 +11,6 @@ import Charts
 struct NeoGraphView: View {
 	@StateObject var viewModel = ViewModel()
 
-	let lunarDistance = 400000.0
-
     var body: some View {
 		ZStack {
 			VStack {
@@ -36,11 +34,7 @@ struct NeoGraphView: View {
 						)
 					}
 
-//					PointMark(x: -1, y: .value("earth", 1))
-//						.symbol(.cross)
-//						.symbolSize(0)
-
-					PointMark(x: -1, y: .value("moon", lunarDistance))
+					PointMark(x: -1, y: .value("moon", Astronomical.moonDistance))
 						.symbol(.cross)
 						.symbolSize(0)
 				}
