@@ -14,10 +14,8 @@ extension NeoGraphView {
 
 		@MainActor
 		func loadData() async {
-//			neos = await appServices.cacheManager.getNeos()
-//			await appServices.cacheManager.loadCacheFromDisk()
-			currentPage = appServices.cacheManager.currentKey
-			neos = await appServices.cacheManager.getNeos(forDate: .now)
+			currentPage = appServices.dataManager.currentKey
+			neos = await appServices.dataManager.getNeos(forDate: Date())
 		}
 	}
 }

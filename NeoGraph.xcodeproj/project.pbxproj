@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4D01376B28EC372E00B4E667 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01376A28EC372E00B4E667 /* Cache.swift */; };
-		4D01376D28EC388A00B4E667 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01376C28EC388A00B4E667 /* CacheManager.swift */; };
 		4D01377028EC44B200B4E667 /* APIServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01376F28EC44B200B4E667 /* APIServices.swift */; };
 		4D01377228EC453A00B4E667 /* NASAURLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01377128EC453A00B4E667 /* NASAURLBuilder.swift */; };
 		4D01377828ECD72C00B4E667 /* PlottableLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01377728ECD72C00B4E667 /* PlottableLength.swift */; };
@@ -32,7 +31,6 @@
 
 /* Begin PBXFileReference section */
 		4D01376A28EC372E00B4E667 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
-		4D01376C28EC388A00B4E667 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		4D01376F28EC44B200B4E667 /* APIServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServices.swift; sourceTree = "<group>"; };
 		4D01377128EC453A00B4E667 /* NASAURLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NASAURLBuilder.swift; sourceTree = "<group>"; };
 		4D01377728ECD72C00B4E667 /* PlottableLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlottableLength.swift; sourceTree = "<group>"; };
@@ -72,7 +70,6 @@
 			isa = PBXGroup;
 			children = (
 				4D01376A28EC372E00B4E667 /* Cache.swift */,
-				4D01376C28EC388A00B4E667 /* CacheManager.swift */,
 			);
 			path = Cache;
 			sourceTree = "<group>";
@@ -279,7 +276,6 @@
 				4DB19BD628E7BFCC00082441 /* NeoService.swift in Sources */,
 				4DE3061028E6CE90005D756F /* NeoContainer.swift in Sources */,
 				4DE305FA28E6C480005D756F /* NeoGraphView.swift in Sources */,
-				4D01376D28EC388A00B4E667 /* CacheManager.swift in Sources */,
 				4D01379328EE7CD700B4E667 /* DataManager.swift in Sources */,
 				4D01376B28EC372E00B4E667 /* Cache.swift in Sources */,
 				4D01377A28ECE22800B4E667 /* PlottableSpeed.swift in Sources */,
