@@ -11,20 +11,33 @@ import Foundation
 final class Cache<Key: Hashable, Value> {
 	private let wrapped = NSCache<WrappedKey, Entry>()
 	private let keyTracker = KeyTracker()
+	private let dateProvider: () -> Date
+	private let entryLifetime: TimeInterval
 
-	init(maximumEntryCount: Int = 50) {
+	init(maximumEntryCount: Int = 50,
+		 dateProvider: @escaping () -> Date = Date.init,
+		 entryLifetime: TimeInterval = 24 * 3600) {
 		wrapped.countLimit = maximumEntryCount
 		wrapped.delegate = keyTracker
+		self.dateProvider = dateProvider
+		self.entryLifetime = entryLifetime
 	}
 
 	func insert(_ value: Value, forKey key: Key) {
-		let entry = Entry(key: key, value: value)
+		let date = dateProvider().addingTimeInterval(entryLifetime)
+		let entry = Entry(key: key, value: value, expirationDate: date)
 		wrapped.setObject(entry, forKey: WrappedKey(key))
 		keyTracker.keys.insert(key)
 	}
 
 	func value(forKey key: Key) -> Value? {
 		guard let entry = wrapped.object(forKey: WrappedKey(key)) else {
+			return nil
+		}
+
+		guard dateProvider() < entry.expirationDate else {
+			// Discard values that have expired
+			removeValue(forKey: key)
 			return nil
 		}
 
@@ -38,8 +51,23 @@ final class Cache<Key: Hashable, Value> {
 	func removeAll() {
 		wrapped.removeAllObjects()
 	}
+}
 
-	// MARK: - Supporting Classes
+// MARK: - Supporting classes
+private extension Cache {
+	final class Entry {
+		let key: Key
+		let value: Value
+		let expirationDate: Date
+
+		init(key: Key, value: Value, expirationDate: Date) {
+			//		init(key: Key, value: Value) {
+			self.key = key
+			self.value = value
+			self.expirationDate = expirationDate
+		}
+	}
+
 	final class WrappedKey: NSObject {
 		let key: Key
 
@@ -56,16 +84,6 @@ final class Cache<Key: Hashable, Value> {
 		}
 	}
 
-	final class Entry {
-		let key: Key
-		let value: Value
-
-		init(key: Key, value: Value) {
-			self.key = key
-			self.value = value
-		}
-	}
-
 	final class KeyTracker: NSObject, NSCacheDelegate {
 		var keys = Set<Key>()
 
@@ -76,7 +94,24 @@ final class Cache<Key: Hashable, Value> {
 				return
 			}
 
+			print("KeyTracker - removing keys")
 			keys.remove(entry.key)
+		}
+	}
+}
+
+extension Cache {
+	subscript(key: Key) -> Value? {
+		get { return value(forKey: key) }
+		set {
+			guard let value = newValue else {
+				// If nil was assigned using our subscript,
+				// then we remove any value for that key:
+				removeValue(forKey: key)
+				return
+			}
+
+			insert(value, forKey: key)
 		}
 	}
 }
@@ -87,6 +122,11 @@ extension Cache.Entry: Codable where Key: Codable, Value: Codable {}
 private extension Cache {
 	func entry(forKey key: Key) -> Entry? {
 		guard let entry = wrapped.object(forKey: WrappedKey(key)) else {
+			return nil
+		}
+
+		guard dateProvider() < entry.expirationDate else {
+			removeValue(forKey: key)
 			return nil
 		}
 
@@ -134,6 +174,7 @@ extension Cache where Key: Codable, Value: Codable {
 		print("Writing out cache: \(fileURL)")
 		let encoder = JSONEncoder()
 		let data = try encoder.encode(self)
+		dump(data)
 		try data.write(to: fileURL)
 	}
 }
