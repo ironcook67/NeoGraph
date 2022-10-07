@@ -3,7 +3,7 @@
 //  NeoGraph
 //
 //  Created by Chon Torres on 10/4/22.
-// 	Based on Code from https://www.swiftbysundell.com/articles/caching-in-swift/
+// 	Original version from John Sundell https://www.swiftbysundell.com/articles/caching-in-swift/
 //
 
 import Foundation

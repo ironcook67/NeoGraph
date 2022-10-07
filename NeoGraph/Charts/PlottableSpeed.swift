@@ -12,7 +12,6 @@ struct PlottableSpeed<UnitType: Unit> {
 	var measurement: Measurement<UnitType>
 }
 
-// MARK: - Speed
 extension PlottableSpeed: Plottable where UnitType == UnitSpeed {
 	var primitivePlottable: Double {
 		self.measurement.converted(to: .kilometersPerHour).value
