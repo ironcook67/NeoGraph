@@ -8,6 +8,7 @@
 import Foundation
 
 struct NeoContainer: Codable {
+	// Keys are strings of dates in "yyyy-MM-dd" format.
 	var neosByDay = [String: [Neo]]()
 }
 
@@ -29,8 +30,7 @@ extension NeoContainer {
 				let neo = Neo(id: neoData.id,
 							  name: neoData.name,
 							  nasaReferenceId: neoData.nasaJPLURL,
-							  closestApproachDate: closestApproachData.closeApproachDate,
-							  closestApproachDateFull: approachDateFull,
+							  closestApproachDate: approachDateFull,
 							  magnitude: neoData.absoluteMagnitudeH,
 							  missDistance: Measurement(value: distance, unit: .kilometers),
 							  relativeVelocity: Measurement(value: velocity, unit: .kilometersPerHour),

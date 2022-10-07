@@ -12,6 +12,7 @@ struct NeoGraphApp: App {
     var body: some Scene {
         WindowGroup {
             NeoGraphView()
+				.preferredColorScheme(.dark)
 		}
     }
 }

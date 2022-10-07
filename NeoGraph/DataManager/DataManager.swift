@@ -21,10 +21,6 @@ class DataManager: ObservableObject {
 	}
 
 	// MARK: - Cache Keys
-	var currentKey: String {
-		keyFromDate(.now)
-	}
-
 	func keyFromDate(_ date: Date) -> String {
 		return DateFormatter.NASADate.string(from: date)
 	}
@@ -33,6 +29,8 @@ class DataManager: ObservableObject {
 	func getNeos(forDate date: Date) async -> [Neo] {
 		let start = Date()
 		defer { print("Some Msg", "Finished in", Date().timeIntervalSince(start)) }
+
+		let neoKey = keyFromDate(date)
 
 		// 1. Reload the cache.
 		await loadCacheFromDisk()
@@ -57,7 +55,7 @@ class DataManager: ObservableObject {
 			let neoService: NeoService = try await apiService.getJSON()
 			let neoContainer = NeoContainer(from: neoService)
 			for entry in neoContainer.neosByDay {
-				if currentKey == entry.key {
+				if entry.key == neoKey {
 					neos = entry.value
 				}
 
@@ -71,7 +69,11 @@ class DataManager: ObservableObject {
 			await saveCacheToDisk()
 		}
 
-		return neos!
+		if neos == nil {
+			return []
+		} else {
+			return neos!
+		}
 	}
 
 	func saveCacheToDisk() async {

@@ -8,14 +8,32 @@
 import Foundation
 
 extension NeoGraphView {
+	@MainActor
 	class ViewModel: ObservableObject {
-		@Published private(set) var currentPage: String?
 		@Published private(set) var neos = [Neo]()
+		private var dateToShow: Date = .now
 
-		@MainActor
+		func incrementDay() async {
+			dateToShow = Date.startOfNextDay(for: dateToShow)
+			print("Showing: \(dateToShow)")
+			neos = await appServices.dataManager.getNeos(forDate: dateToShow)
+		}
+
+		func decrementDay() async {
+			dateToShow = Date.startOfPreviousDay(for: dateToShow)
+			print("Showing: \(dateToShow)")
+			neos = await appServices.dataManager.getNeos(forDate: dateToShow)
+		}
+
+		func setDiplayedDate(to date: Date) async {
+			dateToShow = date
+			print("Showing: \(dateToShow)")
+			neos = await appServices.dataManager.getNeos(forDate: dateToShow)
+		}
+
 		func loadData() async {
-			currentPage = appServices.dataManager.currentKey
-			neos = await appServices.dataManager.getNeos(forDate: Date())
+			print("Showing: \(dateToShow)")
+			neos = await appServices.dataManager.getNeos(forDate: dateToShow)
 		}
 	}
 }

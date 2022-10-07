@@ -35,8 +35,8 @@ final class Cache<Key: Hashable, Value> {
 			return nil
 		}
 
+		// Discard values that have expired
 		guard dateProvider() < entry.expirationDate else {
-			// Discard values that have expired
 			removeValue(forKey: key)
 			return nil
 		}
@@ -54,6 +54,7 @@ final class Cache<Key: Hashable, Value> {
 }
 
 // MARK: - Supporting classes
+
 private extension Cache {
 	final class Entry {
 		let key: Key
@@ -61,7 +62,6 @@ private extension Cache {
 		let expirationDate: Date
 
 		init(key: Key, value: Value, expirationDate: Date) {
-			//		init(key: Key, value: Value) {
 			self.key = key
 			self.value = value
 			self.expirationDate = expirationDate
@@ -94,7 +94,6 @@ private extension Cache {
 				return
 			}
 
-			print("KeyTracker - removing keys")
 			keys.remove(entry.key)
 		}
 	}
@@ -146,7 +145,6 @@ extension Cache: Codable where Key: Codable, Value: Codable {
 		let container = try decoder.singleValueContainer()
 		let entries = try container.decode([Entry].self)
 		entries.forEach(insert)
-		print("INIT: \(entries.count)")
 	}
 
 	func encode(to encoder: Encoder) throws {
@@ -171,7 +169,6 @@ extension Cache where Key: Codable, Value: Codable {
 		using fileManager: FileManager = .default
 	) throws {
 		let fileURL = getCacheFileURL(name: name, fileManager: fileManager)
-		print("Writing out cache: \(fileURL)")
 		let encoder = JSONEncoder()
 		let data = try encoder.encode(self)
 		dump(data)
