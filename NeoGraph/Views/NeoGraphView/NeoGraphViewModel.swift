@@ -11,6 +11,7 @@ extension NeoGraphView {
 	@MainActor
 	class ViewModel: ObservableObject {
 		@Published private(set) var neos = [Neo]()
+		@Published var isShowingHelpModal = false
 		private var dateToShow: Date = .now
 
 		func incrementDay() async {
