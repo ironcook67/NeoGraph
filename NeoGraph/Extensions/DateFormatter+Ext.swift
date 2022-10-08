@@ -13,6 +13,7 @@ extension DateFormatter {
 		formatter.dateFormat = "yyyy-MM-dd"
 		formatter.calendar = Calendar(identifier: .iso8601)
 		formatter.locale = Locale(identifier: "en_US_POSIX")
+		formatter.timeZone = TimeZone(abbreviation: "UTC")
 		return formatter
 	}()
 

@@ -16,7 +16,11 @@ extension Date {
 	}
 
 	static var startOfToday: Date {
-		Calendar.current.startOfDay(for: Date.now)
+		Calendar.current.startOfDay(for: .now)
+	}
+
+	static var endOfToday: Date {
+		endOfTheDay(for: .now)
 	}
 
 	static var startOfYesterday: Date {

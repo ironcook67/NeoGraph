@@ -11,7 +11,7 @@ struct Neo: Codable, Hashable, Identifiable {
 	let id: String
 	let name: String
 	let nasaReferenceId: String
-	let closestApproachDate: Date?
+	let closestApproachDate: Date
 	let magnitude: Double
 	let missDistance: Measurement<UnitLength>
 	let relativeVelocity: Measurement<UnitSpeed>

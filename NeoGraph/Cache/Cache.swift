@@ -24,6 +24,7 @@ final class Cache<Key: Hashable, Value> {
 	}
 
 	func insert(_ value: Value, forKey key: Key) {
+		print("Cache insert1")
 		let date = dateProvider().addingTimeInterval(entryLifetime)
 		let entry = Entry(key: key, value: value, expirationDate: date)
 		wrapped.setObject(entry, forKey: WrappedKey(key))

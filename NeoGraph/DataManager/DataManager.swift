@@ -20,60 +20,75 @@ class DataManager: ObservableObject {
 		self.neoCache = Cache<String, [Neo]>.init(entryLifetime: 4 * 24 * 3600)
 	}
 
-	// MARK: - Cache Keys
-	func keyFromDate(_ date: Date) -> String {
-		return DateFormatter.NASADate.string(from: date)
+	func filterNeosByDate(_ neos: [Neo], by range: ClosedRange<Date>) -> [Neo] {
+		// Filter out the points in the passed date range
+		neos.filter { range.contains($0.closestApproachDate) }
 	}
 
-	// Todo: Implement property handling of Time Zones
-	func getNeos(forDate date: Date) async -> [Neo] {
+	// neoCache is indexed by days in UTC. Each date has all of the Neos
+	// for that date in UTC.
+	// The app should display information for the current time zone, which
+	// will translate into needing to get two dates and filtering for the
+	// local time zone.
+	//
+	func getNeos(forRange range: ClosedRange<Date>) async -> [Neo] {
 		let start = Date()
-		defer { print("Some Msg", "Finished in", Date().timeIntervalSince(start)) }
+		defer { print("getNeos", "Finished in", Date().timeIntervalSince(start)) }
 
-		let neoKey = keyFromDate(date)
+		let utcLowerBound = Calendar.current.dateBySetting(timeZone: .current, of: range.lowerBound)!
+		let utcUpperBound = Calendar.current.dateBySetting(timeZone: .current, of: range.upperBound)!
 
-		// 1. Reload the cache.
+		let keyLowerBound = keyFromDate(utcLowerBound)
+		let keyUpperBound = keyFromDate(utcUpperBound)
+
+		// Reload the cache. The cache goes out of memory everytime the app
+		// is not in the foregournd. The cache is small so this should be
+		// quick.
 		await loadCacheFromDisk()
 
-		// 2. Check if the neos are in the cache.
-		let cacheKey = keyFromDate(date)
-		var neos = neoCache.value(forKey: cacheKey)
-		if neos != nil {
-			print("✅ Cache hit! \(cacheKey)")
-			return neos!
+		// Check if the neos are in Cache.
+		var neos = [Neo]()
+		if let neos1 = neoCache.value(forKey: keyLowerBound) {
+			print("✅ Cache hit! \(keyLowerBound) - \(keyUpperBound)")
+			neos.append(contentsOf: filterNeosByDate(neos1, by: range))
+
+			if keyLowerBound != keyUpperBound {
+				if let neos2 = neoCache.value(forKey: keyUpperBound) {
+					neos.append(contentsOf: filterNeosByDate(neos2, by: range))
+				}
+			}
+
+			return neos
 		}
 
-		// 3. Download neos for yesterday through tomorrow.
-		// 	  The reported data is in UTC and this will ensure
-		//	  the right local display.
-
-		print("💣 Cache miss! \(cacheKey)")
+		print("💣 Cache miss! \(keyLowerBound) - \(keyUpperBound)")
 		let apiService = APIService(urlString: NASAURLBuilder.urlString(
-			start: .startOfPreviousDay(for: date),
-			end: .startOfNextDay(for: date)))
+			start: .startOfPreviousDay(for: utcLowerBound),
+			end: .startOfNextDay(for: utcUpperBound)))
 		do {
 			let neoService: NeoService = try await apiService.getJSON()
 			let neoContainer = NeoContainer(from: neoService)
 			for entry in neoContainer.neosByDay {
-				if entry.key == neoKey {
-					neos = entry.value
-				}
-
+				// Insert into the Cache
 				neoCache.insert(entry.value, forKey: entry.key)
+
+				// Filter within the date range
+				neos.append(contentsOf: filterNeosByDate(entry.value, by: range))
 			}
 		} catch {
 			print("❌ Error - \(error.localizedDescription)")
 		}
 
-		Task {
-			await saveCacheToDisk()
-		}
+		// Save the cache to disk
+		Task { await saveCacheToDisk() }
 
-		if neos == nil {
-			return []
-		} else {
-			return neos!
-		}
+		return neos
+	}
+
+	// MARK: - Cache
+	// Returns a Cache Key from a passed date, in UTC
+	func keyFromDate(_ date: Date) -> String {
+		return DateFormatter.NASADate.string(from: date)
 	}
 
 	func saveCacheToDisk() async {
@@ -89,8 +104,8 @@ class DataManager: ObservableObject {
 		//	If the Neo Cache file does not exist, clear out the Neop Cache.
 		// 	Remove old cached data.
 
-		let fileURL = neoCache.getCacheFileURL(name: CacheConstants.neoCacheFilemame, fileManager: FileManager.default)
-
+		let fileURL = neoCache.getCacheFileURL(name: CacheConstants.neoCacheFilemame,
+											   fileManager: FileManager.default)
 		guard FileManager.default.fileExists(atPath: fileURL.path) else {
 			return
 		}
@@ -100,7 +115,6 @@ class DataManager: ObservableObject {
 			let data = try Data(contentsOf: fileURL)
 			let decoder = JSONDecoder()
 			neoCache = try decoder.decode(Cache<String, [Neo]>.self, from: data)
-
 		} catch {
 			print("loadCache \(error.localizedDescription)")
 		}

@@ -25,7 +25,7 @@ struct NeoGraphView: View {
 						Chart {
 							ForEach(viewModel.neos) { neo in
 								PointMark(
-									x: .value("spread", neo.closestApproachDate!.timeIntervalSince(Calendar.current.startOfDay(for: neo.closestApproachDate!))),
+									x: .value("spread", neo.closestApproachDate.timeIntervalSince(Calendar.current.startOfDay(for: neo.closestApproachDate))),
 									y: .value("distance", PlottableLength(measurement: neo.missDistance))
 								)
 							}
@@ -51,14 +51,14 @@ struct NeoGraphView: View {
 				HStack {
 					Spacer()
 					Button {
-						Task { await viewModel.decrementDay() }
+						Task { await viewModel.decrement() }
 					} label: {
 						Text("-")
 							.frame(width: 40, height: 20)
 					}
 					Spacer()
 					Button {
-						Task { await viewModel.incrementDay() }
+						Task { await viewModel.increment() }
 					} label: {
 						Text("+")
 							.frame(width: 40, height: 20)

@@ -12,29 +12,36 @@ extension NeoGraphView {
 	class ViewModel: ObservableObject {
 		@Published private(set) var neos = [Neo]()
 		@Published var isShowingHelpModal = false
-		private var dateToShow: Date = .now
+		private var lastStartTime: Date = .startOfToday
 
-		func incrementDay() async {
-			dateToShow = Date.startOfNextDay(for: dateToShow)
+		func increment() async {
+			lastStartTime = lastStartTime.offsetBy(days: 0, seconds: 3600)
+			let dateToShow = lastStartTime
+			let dateToShowEnd = dateToShow.offsetBy(days: 1, seconds: -1)
 			print("Showing: \(dateToShow)")
-			neos = await appServices.dataManager.getNeos(forDate: dateToShow)
+			neos = await appServices.dataManager.getNeos(forRange: dateToShow...dateToShowEnd)
 		}
 
-		func decrementDay() async {
-			dateToShow = Date.startOfPreviousDay(for: dateToShow)
+		func decrement() async {
+			lastStartTime = lastStartTime.offsetBy(days: 0, seconds: -3600)
+			let dateToShow = lastStartTime
+			let dateToShowEnd = dateToShow.offsetBy(days: 1, seconds: -1)
 			print("Showing: \(dateToShow)")
-			neos = await appServices.dataManager.getNeos(forDate: dateToShow)
+			neos = await appServices.dataManager.getNeos(forRange: dateToShow...dateToShowEnd)
 		}
 
-		func setDiplayedDate(to date: Date) async {
-			dateToShow = date
-			print("Showing: \(dateToShow)")
-			neos = await appServices.dataManager.getNeos(forDate: dateToShow)
-		}
+//		func setDiplayedDate(to date: Date) async {
+//			dateToShow = Date.startOfTheDay(for: date)
+//			let dateToShowEnd = Date.endOfTheDay(for: dateToShow)
+//			print("Showing: \(dateToShow)")
+//			neos = await appServices.dataManager.getNeos(forRange: dateToShow...dateToShowEnd)
+//		}
 
 		func loadData() async {
-			print("Showing: \(dateToShow)")
-			neos = await appServices.dataManager.getNeos(forDate: dateToShow)
+			lastStartTime = Calendar.current.date(from: .init(timeZone: .current, year: 2022, month: 10, day: 13, hour: 0, minute: 0))!
+			let dateToShow = lastStartTime
+			let dateToShowEnd = Date.endOfTheDay(for: lastStartTime)
+			neos = await appServices.dataManager.getNeos(forRange: dateToShow...dateToShowEnd)
 		}
 	}
 }

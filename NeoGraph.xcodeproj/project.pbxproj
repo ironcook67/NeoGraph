@@ -22,6 +22,7 @@
 		4D5575CF28EAC26500AA64CC /* NeoGraphViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5575CE28EAC26500AA64CC /* NeoGraphViewModel.swift */; };
 		4D5575D328EAC50500AA64CC /* Bundle+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5575D228EAC50500AA64CC /* Bundle+Ext.swift */; };
 		4DB19BD628E7BFCC00082441 /* NeoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DB19BD528E7BFCC00082441 /* NeoService.swift */; };
+		4DCA24CD28F1408200A054A7 /* Calendar+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DCA24CC28F1408200A054A7 /* Calendar+Ext.swift */; };
 		4DE305F828E6C480005D756F /* NeoGraphApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE305F728E6C480005D756F /* NeoGraphApp.swift */; };
 		4DE305FA28E6C480005D756F /* NeoGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE305F928E6C480005D756F /* NeoGraphView.swift */; };
 		4DE305FC28E6C482005D756F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DE305FB28E6C482005D756F /* Assets.xcassets */; };
@@ -48,6 +49,7 @@
 		4D5575CE28EAC26500AA64CC /* NeoGraphViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoGraphViewModel.swift; sourceTree = "<group>"; };
 		4D5575D228EAC50500AA64CC /* Bundle+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Ext.swift"; sourceTree = "<group>"; };
 		4DB19BD528E7BFCC00082441 /* NeoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoService.swift; sourceTree = "<group>"; };
+		4DCA24CC28F1408200A054A7 /* Calendar+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Ext.swift"; sourceTree = "<group>"; };
 		4DE305F428E6C480005D756F /* NeoGraph.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NeoGraph.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DE305F728E6C480005D756F /* NeoGraphApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoGraphApp.swift; sourceTree = "<group>"; };
 		4DE305F928E6C480005D756F /* NeoGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeoGraphView.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				4D5575D228EAC50500AA64CC /* Bundle+Ext.swift */,
 				4D01377C28ECE43600B4E667 /* Date+Ext.swift */,
 				4D5575C728EAB5E500AA64CC /* DateFormatter+Ext.swift */,
+				4DCA24CC28F1408200A054A7 /* Calendar+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -322,6 +325,7 @@
 				4D5575D328EAC50500AA64CC /* Bundle+Ext.swift in Sources */,
 				4D5575C528EAB42600AA64CC /* Services.swift in Sources */,
 				4D01377228EC453A00B4E667 /* NASAURLBuilder.swift in Sources */,
+				4DCA24CD28F1408200A054A7 /* Calendar+Ext.swift in Sources */,
 				4D5575CF28EAC26500AA64CC /* NeoGraphViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -15,7 +15,8 @@ struct NeoContainer: Codable {
 extension NeoContainer {
 	init(from service: NeoService) {
 		let nasaDateFormatter = DateFormatter.NASAFullUTCDate
-
+		nasaDateFormatter.timeZone = .gmt
+		
 		for date in service.neosByDate {
 
 			var neos = [Neo]()
@@ -25,7 +26,7 @@ extension NeoContainer {
 				guard let closestApproachData = neoData.closestApproach.first else { continue }
 				let distance = Double(closestApproachData.missDistance.kilometers) ?? 0.0
 				let velocity = Double(closestApproachData.relativeVelocity.kph) ?? 0.0
-				let approachDateFull = nasaDateFormatter.date(from: closestApproachData.closeApproachDateFull)
+				let approachDateFull = nasaDateFormatter.date(from: closestApproachData.closeApproachDateFull) ?? Date()
 
 				let neo = Neo(id: neoData.id,
 							  name: neoData.name,
