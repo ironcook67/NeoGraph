@@ -5,7 +5,7 @@
 //  Created by Chon Torres on 10/2/22.
 //
 
-import Foundation
+import SwiftUI
 
 protocol Services: ObservableObject {
 	var calendar: Calendar { get }
@@ -18,20 +18,18 @@ class AppServices: Services {
 	var calendar: Calendar
 	var dateProvider: () -> Date
 	var dataManager: DataManager
-	var apiKey: String
+	@AppStorage(AppStorageKeys.apiKey.rawValue) var apiKey = NASAURLBuilder.DEMO_KEY
 
 	init(calendar: Calendar = .autoupdatingCurrent,
 		 dateProvider: @escaping () -> Date = Date.init,
-		 dataManager: DataManager = .init(),
-		 apiKey: String = "DEMO_KEY") {
+		 dataManager: DataManager = .init()) {
 
 		self.calendar = calendar
 		self.dateProvider = dateProvider
 		self.dataManager = dataManager
-		self.apiKey = apiKey
 	}
 }
 
 // Make a global variable until a better way is found.
 // Todo: Change this before releasing
-var appServices = AppServices(apiKey: "VP6e3MHCihUzVpKioZFfKe3wHoJjhYeandyKMr0m")
+var appServices = AppServices()

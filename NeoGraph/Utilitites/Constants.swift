@@ -14,6 +14,10 @@ enum Theme {
 	static let accent = Color("AccentColor")
 }
 
+enum AppStorageKeys: String {
+	case apiKey
+}
+
 enum Astronomical {
 	static let moonDistance = 400000.0
 }

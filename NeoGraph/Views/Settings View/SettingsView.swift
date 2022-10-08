@@ -8,29 +8,34 @@
 import SwiftUI
 
 struct SettingsView: View {
-	@State private var apiKey: String = appServices.apiKey
+	@State private var apiKey = appServices.apiKey
 
     var body: some View {
 		List {
 			Text("This app uses NASA's servers to get Near Earth Object details. The demo api key is DEMO_KEY and is limited to 30 requests per hour (which is fine for viewing the data on this app.)")
 
-			Text("An API key can be generated on the NASA API website.")
+			Text("An API key can be generated on the NASA API website and pasted below:")
 
 			Link(destination: URL(string: "https://api.nasa.gov")!, label: {
 				HStack {
-					Text("NASA API website")
-					LocationActionButton(color: .secondary, imageName: "network")
+					Text("https://api.nasa.gov")
+					Spacer()
+					NetworkActionButton(color: .secondary, imageName: "network")
 				}
 			})
 			.accessibilityRemoveTraits(.isButton)
 			.accessibilityLabel(Text("Go to website"))
 
 			Section(header: Text("NASA API")) {
-				SectionDetailTextField(title: "Key", details: $apiKey)
+				TextField("API_KEY", text: $apiKey, onCommit: {
+					appServices.apiKey = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
+					print("**\(appServices.apiKey)**")
+				})
+					.textFieldStyle(.roundedBorder)
+					.keyboardType(.alphabet)
+					.disableAutocorrection(true)
+					.autocapitalization(.none)
 			}
-		}
-		.onDisappear {
-			appServices.apiKey = apiKey
 		}
     }
 }
@@ -41,26 +46,7 @@ struct Settings_Previews: PreviewProvider {
     }
 }
 
-struct SectionDetailTextField: View {
-	let title: String
-	@Binding var details: String
-
-	var body: some View {
-		HStack {
-			Text(title)
-				.foregroundColor(Color.secondary)
-			Spacer()
-			TextField("", text: $details)
-				.multilineTextAlignment(.trailing)
-				.keyboardType(.alphabet)
-				.disableAutocorrection(true)
-				.autocapitalization(.words)
-				.keyboardType(UIKeyboardType.default)
-		}
-	}
-}
-
-private struct LocationActionButton: View {
+private struct NetworkActionButton: View {
 	var color: Color
 	var imageName: String
 

@@ -110,3 +110,11 @@ class DataManager: ObservableObject {
 		static let neoCacheFilemame = "neoCache"
 	}
 }
+
+extension DataManager {
+	// MARK: - Debugging Methods
+	func clearCache() {
+		print("Clearing Cache")
+		self.neoCache = Cache<String, [Neo]>.init(entryLifetime: 4 * 24 * 3600)
+	}
+}

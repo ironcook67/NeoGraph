@@ -13,7 +13,7 @@ struct HelpModalView: View {
 
 	var body: some View {
 		ZStack {
-			Color.black.edgesIgnoringSafeArea(.all)
+			// Color.black.edgesIgnoringSafeArea(.all)
 			VStack {
 				Text("I'm Here to Help!")
 				Button("dismiss") {

@@ -10,7 +10,6 @@ import Charts
 
 struct NeoGraphView: View {
 	@StateObject var viewModel = ViewModel()
-	@AppStorage("apiKey") var apiKey = NASAURLBuilder.DEMO_KEY
 	@State private var showPreferences = false
 
     var body: some View {
@@ -143,7 +142,7 @@ private struct FullScreenBlackTransparencyView: View {
 	var body: some View {
 		Color(.black)
 			.ignoresSafeArea()
-			.opacity(0.9)
+			.opacity(0.8)
 			.transition(AnyTransition.opacity.animation(.easeOut(duration: 0.35)))
 			.zIndex(1)
 			.accessibilityHidden(true)
@@ -156,3 +155,4 @@ struct ContentView_Previews: PreviewProvider {
 			.preferredColorScheme(.dark)
     }
 }
+
