@@ -25,7 +25,7 @@ struct NeoGraphView: View {
 						Chart {
 							ForEach(viewModel.neos) { neo in
 								PointMark(
-									x: .value("spread", neo.closestApproachDate.timeIntervalSince(Calendar.current.startOfDay(for: neo.closestApproachDate))),
+									x: .value("spread", neo.closestApproachDate.timeIntervalSince(viewModel.lastStartTime)),
 									y: .value("distance", PlottableLength(measurement: neo.missDistance))
 								)
 							}
@@ -48,23 +48,7 @@ struct NeoGraphView: View {
 					.animation(.linear, value: viewModel.neos)
 				}
 
-				HStack {
-					Spacer()
-					Button {
-						Task { await viewModel.decrement() }
-					} label: {
-						Text("-")
-							.frame(width: 40, height: 20)
-					}
-					Spacer()
-					Button {
-						Task { await viewModel.increment() }
-					} label: {
-						Text("+")
-							.frame(width: 40, height: 20)
-					}
-					Spacer()
-				}
+				testingButtons
 			}
 			if viewModel.isShowingHelpModal {
 				FullScreenBlackTransparencyView()
@@ -134,6 +118,26 @@ struct NeoGraphView: View {
 					.frame(height: 100)
 					.offset(y: 40)
 			}
+		}
+	}
+
+	var testingButtons: some View {
+		HStack {
+			Spacer()
+			Button {
+				Task { await viewModel.decrement() }
+			} label: {
+				Text("-")
+					.frame(width: 40, height: 20)
+			}
+			Spacer()
+			Button {
+				Task { await viewModel.increment() }
+			} label: {
+				Text("+")
+					.frame(width: 40, height: 20)
+			}
+			Spacer()
 		}
 	}
 }

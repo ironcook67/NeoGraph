@@ -15,6 +15,15 @@ extension Date {
 		return Calendar.current.date(byAdding: components, to: self) ?? Date()
 	}
 
+	static var startOfTheHour: Date {
+		let minute = Calendar.current.component(.minute, from: .now)
+		return Calendar.current.date(byAdding: .minute, value: -minute, to: .now, wrappingComponents: false) ?? Date()
+	}
+
+	static var dayEarlierSameTime: Date {
+		Date().offsetBy(days: -1, seconds: 0)
+	}
+	
 	static var startOfToday: Date {
 		Calendar.current.startOfDay(for: .now)
 	}

@@ -9,16 +9,28 @@ import SwiftUI
 
 struct HelpModalView: View {
 	@Binding var isShowingHelpModal: Bool
-//	@StateObject private var viewModel = ViewModel()
 
 	var body: some View {
 		ZStack {
-			// Color.black.edgesIgnoringSafeArea(.all)
 			VStack {
-				Text("I'm Here to Help!")
+				Spacer()
+				Text("Near-Earth Object Observations Program")
+					.font(.title)
+					.multilineTextAlignment(.center)
+					.padding(.horizontal)
+				Spacer()
+				Group {
+					Text("This app is displaying data from the NEO Observational Program. Its mission is to find, track, and characterize at least 90 percent of the predicted number of NEOs that are 140 meters and larger in size–larger than a small football stadium–and to characterize a subset representative of the entire population.")
+					Text("\n")
+					Text("The objects are plotted on a logarithmic scale.")
+				}
+				.multilineTextAlignment(.center)
+				.padding(.horizontal)
+				Spacer()
 				Button("dismiss") {
 					withAnimation { isShowingHelpModal = false }
 				}
+				Spacer()
 			}
 		}
 		.transition(.opacity)
