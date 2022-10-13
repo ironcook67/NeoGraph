@@ -22,7 +22,8 @@ class DataManager: ObservableObject {
 
 	func filterNeosByDate(_ neos: [Neo], by range: ClosedRange<Date>) -> [Neo] {
 		// Filter out the points in the passed date range
-		neos.filter { range.contains($0.closestApproachDate) }
+		print("filterNeosByDate", "\(range)")
+		return neos.filter { range.contains($0.closestApproachDate) }
 	}
 
 	// neoCache is indexed by days in UTC. Each date has all of the Neos
@@ -86,6 +87,7 @@ class DataManager: ObservableObject {
 	}
 
 	// MARK: - Cache
+	
 	// Returns a Cache Key from a passed date, in UTC
 	func keyFromDate(_ date: Date) -> String {
 		return DateFormatter.NASADate.string(from: date)
@@ -122,13 +124,5 @@ class DataManager: ObservableObject {
 
 	enum CacheConstants {
 		static let neoCacheFilemame = "neoCache"
-	}
-}
-
-extension DataManager {
-	// MARK: - Debugging Methods
-	func clearCache() {
-		print("Clearing Cache")
-		self.neoCache = Cache<String, [Neo]>.init(entryLifetime: 4 * 24 * 3600)
 	}
 }

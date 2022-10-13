@@ -130,7 +130,12 @@ struct NeoGraphView: View {
 				Text("-")
 					.frame(width: 40, height: 20)
 			}
-			Spacer()
+			Button {
+				Task { await viewModel.nextNeo() }
+			} label: {
+				Image(systemName: "plus.circle")
+					.frame(width: 40, height: 20)
+			}
 			Button {
 				Task { await viewModel.increment() }
 			} label: {

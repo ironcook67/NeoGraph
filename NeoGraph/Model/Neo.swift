@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Neo: Codable, Hashable, Identifiable {
+struct Neo: Codable, Hashable, Identifiable, Comparable {
 	let id: String
 	let name: String
 	let nasaReferenceId: String
@@ -21,6 +21,10 @@ struct Neo: Codable, Hashable, Identifiable {
 	let isSentryObject: Bool
 	let URL: String
 	let JPLURL: String
+
+	static func < (lhs: Neo, rhs: Neo) -> Bool {
+		lhs.closestApproachDate < rhs.closestApproachDate
+	}
 }
 
 extension Neo {
