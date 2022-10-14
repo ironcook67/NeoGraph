@@ -11,20 +11,9 @@ extension NeoGraphView {
 	@MainActor
 	class ViewModel: ObservableObject {
 		@Published private(set) var neos = [Neo]()
+		@Published private(set) var nextNeoInTime: Neo?
 		@Published var isShowingHelpModal = false
 		private(set) var lastStartTime: Date = Date().offsetBy(days: 0, hours: -12)
-
-		func reportFound(neo: Neo) {
-			let date = appServices.calendar.dateBySetting(timeZone: TimeZone.current, of: neo.closestApproachDate)!
-			print("found", neo.name, "\(date.formatted())")
-		}
-
-		func neoDump() {
-			for neo in neos.sorted() {
-				let date = appServices.calendar.dateBySetting(timeZone: TimeZone.current, of: neo.closestApproachDate)!
-				print("displayed", neo.name, "\(date.formatted())")
-			}
-		}
 
 		func nextNeo() async -> Neo? {
 			// Filter for the next Neos
@@ -34,7 +23,7 @@ extension NeoGraphView {
 			var foundNeos = [Neo]()
 			var retrys = 0
 
-			neoDump()
+//			neoDump()
 
 			foundNeos = appServices.dataManager.filterNeosByDate(neos, by: midDate ... endDate)
 			if foundNeos.first != nil {
@@ -57,6 +46,7 @@ extension NeoGraphView {
 				return neo
 			}
 
+			nextNeoInTime = foundNeos.first
 			return foundNeos.first
 		}
 
@@ -69,6 +59,36 @@ extension NeoGraphView {
 			let dateToShow = lastStartTime
 			let dateToShowEnd = dateToShow.offsetBy(days: 1, hours: 0)
 			neos = await appServices.dataManager.getNeos(forRange: dateToShow...dateToShowEnd)
+			Task { await nextNeoInTime = nextNeo() }
+		}
+
+		// MARK: - Testing
+		func reportFound(neo: Neo) {
+			let date = appServices.calendar.dateBySetting(timeZone: TimeZone.current, of: neo.closestApproachDate)!
+			print("found", neo.name, "\(date.formatted())")
+		}
+
+		func neoDump() {
+			for neo in neos.sorted() {
+				let date = appServices.calendar.dateBySetting(timeZone: TimeZone.current, of: neo.closestApproachDate)!
+				print("displayed", neo.name, "\(date.formatted())")
+			}
+		}
+
+		func increment() async {
+			lastStartTime = lastStartTime.offsetBy(days: 0, hours: 1)
+			let dateToShow = lastStartTime
+			let dateToShowEnd = dateToShow.offsetBy(days: 1, seconds: -1)
+			neos = await appServices.dataManager.getNeos(forRange: dateToShow...dateToShowEnd)
+			Task { await nextNeoInTime = nextNeo() }
+		}
+
+		func decrement() async {
+			lastStartTime = lastStartTime.offsetBy(days: 0, hours: -1)
+			let dateToShow = lastStartTime
+			let dateToShowEnd = dateToShow.offsetBy(days: 1, seconds: -1)
+			neos = await appServices.dataManager.getNeos(forRange: dateToShow...dateToShowEnd)
+			Task { await nextNeoInTime = nextNeo() }
 		}
 	}
 }

@@ -25,21 +25,37 @@ struct NeoGraphView: View {
 						Chart {
 							ForEach(viewModel.neos) { neo in
 								PointMark(
-									x: .value("spread", neo.closestApproachDate.timeIntervalSince(viewModel.lastStartTime)),
+									x: .value("time", neoTimeInterval(neo)),
 									y: .value("distance", PlottableLength(measurement: neo.missDistance))
 								)
 							}
 						}
 						.chartOverlay { proxy in
-							// let empty = emptySpace(proxy)
 							GeometryReader { geoProxy in
-								if let yMoon = proxy.position(for: (0, Astronomical.moonDistance)) {
+								let yMoon = proxy.position(forY: Astronomical.moonDistance)
+								if let yMoon {
 									let xMoon = geoProxy.size.width * 0.9
 									Image("moon")
 										.resizable()
 										.frame(width: 50, height: 50)
-										.position(CGPoint(x: xMoon, y: yMoon.y))
+										.position(CGPoint(x: xMoon, y: yMoon))
 								}
+
+								// Show info on the next Neo with the vertical center at the moon positon.
+								nextNeoInfo
+									.position(x: geoProxy.size.width * 0.4, y: yMoon ?? 0.0)
+
+								// Give the next Neo a glow.
+								let nextNeoMissDistance = viewModel.nextNeoInTime?.missDistance.value ?? 0.0
+								let closeNeoY = proxy.position(forY: nextNeoMissDistance) ?? 0.0
+
+								let nextNeoTimeInterval = neoTimeInterval(viewModel.nextNeoInTime)
+								let closeNeoX = proxy.position(forX: nextNeoTimeInterval) ?? 0.0
+
+								Circle()
+									.frame(width: 20, height: 20)
+									.position(x: closeNeoX, y: closeNeoY)
+									.opacity(0.3)
 							}
 						}
 						.chartXAxis(.hidden)
@@ -48,6 +64,8 @@ struct NeoGraphView: View {
 					}
 					.animation(.linear, value: viewModel.neos)
 				}
+
+				testingButtons
 			}
 			if viewModel.isShowingHelpModal {
 				FullScreenBlackTransparencyView()
@@ -119,6 +137,51 @@ struct NeoGraphView: View {
 			}
 		}
 	}
+
+	var nextNeoInfo: some View {
+		// Show info on the next Neo
+		let nextNeoName = viewModel.nextNeoInTime?.name ?? "Loading..."
+		let nextNeoTime = viewModel.nextNeoInTime?.closestApproachDate.formatted() ?? ""
+		let nextNeoDistance = viewModel.nextNeoInTime?.missDistance.formatted() ?? ""
+
+		return VStack (alignment: .leading) {
+			Text("Next Near Earth Object:")
+				.font(.title2)
+			Text("\(nextNeoName)")
+			Text("\(nextNeoDistance)")
+			Text("\(nextNeoTime)")
+		}
+	}
+
+	var testingButtons: some View {
+		HStack {
+			Spacer()
+			Button {
+				Task { await viewModel.decrement() }
+			} label: {
+				Text("-")
+					.frame(width: 40, height: 20)
+			}
+			Button {
+				Task { await viewModel.nextNeo() }
+			} label: {
+				Image(systemName: "plus.circle")
+					.frame(width: 40, height: 20)
+			}
+			Button {
+				Task { await viewModel.increment() }
+			} label: {
+				Text("+")
+					.frame(width: 40, height: 20)
+			}
+			Spacer()
+		}
+		.hidden()
+	}
+
+	func neoTimeInterval(_ neo: Neo?) -> TimeInterval {
+		neo?.closestApproachDate.timeIntervalSince(viewModel.lastStartTime) ?? 0.0
+	}
 }
 
 private struct FullScreenBlackTransparencyView: View {
@@ -133,9 +196,9 @@ private struct FullScreenBlackTransparencyView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
+	static var previews: some View {
 		NeoGraphView()
 			.preferredColorScheme(.dark)
-    }
+	}
 }
 

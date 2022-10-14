@@ -14,6 +14,7 @@ struct APIService {
 							   JSONDecoder.DateDecodingStrategy = .deferredToDate,
 							   keyDecodingStrategy:
 							   JSONDecoder.KeyDecodingStrategy = .useDefaultKeys) async throws -> T {
+//		print(urlString)
 
 		guard let url = URL(string: urlString) else {
 			throw APIError.invalidURL
