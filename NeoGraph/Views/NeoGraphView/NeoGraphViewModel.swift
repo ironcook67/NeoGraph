@@ -27,7 +27,7 @@ extension NeoGraphView {
 		}
 
 		func nextNeo() async -> Neo? {
-			// Filter for the next five Neos
+			// Filter for the next Neos
 			var startDate = lastStartTime
 			let midDate = lastStartTime.offsetBy(days: 0, hours: 12)
 			var endDate = startDate.offsetBy(days: 0, hours: 24)
@@ -63,12 +63,11 @@ extension NeoGraphView {
 		}
 
 		func loadData() async {
-			let dateToShow = lastStartTime
-			let dateToShowEnd = dateToShow.offsetBy(days: 1, hours: 0)
-			neos = await appServices.dataManager.getNeos(forRange: dateToShow...dateToShowEnd)
+			await loadData(.now)
 		}
 
 		func loadData(_ date: Date) async {
+			print("loadData for \(date)")
 			lastStartTime = date.offsetBy(days: 0, hours: -12)
 			let dateToShow = lastStartTime
 			let dateToShowEnd = dateToShow.offsetBy(days: 1, hours: 0)

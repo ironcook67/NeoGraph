@@ -12,7 +12,38 @@ struct NeoGraphView: View {
 	@StateObject var viewModel = ViewModel()
 	@State private var showPreferences = false
 
-    var body: some View {
+	func emptySpace(_ chartProxy: ChartProxy) -> CGRect {
+		var origin: CGPoint = CGPoint(x: 0, y: 0)
+		var size: CGSize = .init(width: 0, height: 0)
+
+		var maxX: CGFloat = 0
+		var maxY: CGFloat = 0
+
+		viewModel.neos.forEach({ neo in
+			let x = neo.closestApproachDate.timeIntervalSince(viewModel.lastStartTime)
+			let y = neo.missDistance.value
+
+			if y > origin.y {
+				origin.y = y
+				origin.x = min(origin.x, x)
+			}
+
+			maxY = max(maxY, y)
+			maxX = max(maxX, x)
+		})
+
+		print("max, min", maxX, maxY)
+
+		let chartSize = chartProxy.plotAreaSize
+		print("chartSize", chartSize.width, chartSize.height)
+
+		size = CGSize(width: chartSize.width - maxX, height: chartSize.width - maxY)
+
+		print("graph limits", "\(origin.x), \(origin.y)", "\(size.width), \(size.height)")
+		return CGRect(origin: origin, size: size)
+	}
+
+	var body: some View {
 		ZStack {
 			VStack {
 				topButtons
@@ -31,6 +62,7 @@ struct NeoGraphView: View {
 							}
 						}
 						.chartOverlay { proxy in
+							// let empty = emptySpace(proxy)
 							GeometryReader { geoProxy in
 								if let yMoon = proxy.position(for: (0, Astronomical.moonDistance)) {
 									let xMoon = geoProxy.size.width * 0.9
@@ -40,6 +72,12 @@ struct NeoGraphView: View {
 										.position(CGPoint(x: xMoon, y: yMoon.y))
 								}
 							}
+
+							//							Rectangle()
+							//								.frame(width: empty.width*0.9, height: empty.height*0.9)
+							//								.position(x: empty.origin.x, y: empty.origin.y)
+							//								.background(Color.white)
+							//								.opacity(0.4)
 						}
 						.chartXAxis(.hidden)
 						.chartYScale(domain: 100_000...100_000_000, type: .log)
@@ -81,7 +119,7 @@ struct NeoGraphView: View {
 		.task {
 			await viewModel.loadData()
 		}
-    }
+	}
 
 	var topButtons: some View {
 		HStack {
@@ -160,7 +198,7 @@ private struct FullScreenBlackTransparencyView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        NeoGraphView()
+		NeoGraphView()
 			.preferredColorScheme(.dark)
     }
 }
