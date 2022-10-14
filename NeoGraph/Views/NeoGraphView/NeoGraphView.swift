@@ -12,37 +12,6 @@ struct NeoGraphView: View {
 	@StateObject var viewModel = ViewModel()
 	@State private var showPreferences = false
 
-	func emptySpace(_ chartProxy: ChartProxy) -> CGRect {
-		var origin: CGPoint = CGPoint(x: 0, y: 0)
-		var size: CGSize = .init(width: 0, height: 0)
-
-		var maxX: CGFloat = 0
-		var maxY: CGFloat = 0
-
-		viewModel.neos.forEach({ neo in
-			let x = neo.closestApproachDate.timeIntervalSince(viewModel.lastStartTime)
-			let y = neo.missDistance.value
-
-			if y > origin.y {
-				origin.y = y
-				origin.x = min(origin.x, x)
-			}
-
-			maxY = max(maxY, y)
-			maxX = max(maxX, x)
-		})
-
-		print("max, min", maxX, maxY)
-
-		let chartSize = chartProxy.plotAreaSize
-		print("chartSize", chartSize.width, chartSize.height)
-
-		size = CGSize(width: chartSize.width - maxX, height: chartSize.width - maxY)
-
-		print("graph limits", "\(origin.x), \(origin.y)", "\(size.width), \(size.height)")
-		return CGRect(origin: origin, size: size)
-	}
-
 	var body: some View {
 		ZStack {
 			VStack {
@@ -56,28 +25,38 @@ struct NeoGraphView: View {
 						Chart {
 							ForEach(viewModel.neos) { neo in
 								PointMark(
-									x: .value("spread", neo.closestApproachDate.timeIntervalSince(viewModel.lastStartTime)),
+									x: .value("time", neoTimeInterval(neo)),
 									y: .value("distance", PlottableLength(measurement: neo.missDistance))
 								)
 							}
 						}
 						.chartOverlay { proxy in
-							// let empty = emptySpace(proxy)
 							GeometryReader { geoProxy in
-								if let yMoon = proxy.position(for: (0, Astronomical.moonDistance)) {
+								let yMoon = proxy.position(forY: Astronomical.moonDistance)
+								if let yMoon {
 									let xMoon = geoProxy.size.width * 0.9
 									Image("moon")
 										.resizable()
 										.frame(width: 50, height: 50)
-										.position(CGPoint(x: xMoon, y: yMoon.y))
+										.position(CGPoint(x: xMoon, y: yMoon))
 								}
-							}
 
-							//							Rectangle()
-							//								.frame(width: empty.width*0.9, height: empty.height*0.9)
-							//								.position(x: empty.origin.x, y: empty.origin.y)
-							//								.background(Color.white)
-							//								.opacity(0.4)
+								// Show info on the next Neo with the vertical center at the moon positon.
+								nextNeoInfo
+									.position(x: geoProxy.size.width * 0.4, y: yMoon ?? 0.0)
+
+								// Give the next Neo a glow.
+								let nextNeoMissDistance = viewModel.nextNeoInTime?.missDistance.value ?? 0.0
+								let closeNeoY = proxy.position(forY: nextNeoMissDistance) ?? 0.0
+
+								let nextNeoTimeInterval = neoTimeInterval(viewModel.nextNeoInTime)
+								let closeNeoX = proxy.position(forX: nextNeoTimeInterval) ?? 0.0
+
+								Circle()
+									.frame(width: 20, height: 20)
+									.position(x: closeNeoX, y: closeNeoY)
+									.opacity(0.3)
+							}
 						}
 						.chartXAxis(.hidden)
 						.chartYScale(domain: 100_000...100_000_000, type: .log)
@@ -159,6 +138,21 @@ struct NeoGraphView: View {
 		}
 	}
 
+	var nextNeoInfo: some View {
+		// Show info on the next Neo
+		let nextNeoName = viewModel.nextNeoInTime?.name ?? "Loading..."
+		let nextNeoTime = viewModel.nextNeoInTime?.closestApproachDate.formatted() ?? ""
+		let nextNeoDistance = viewModel.nextNeoInTime?.missDistance.formatted() ?? ""
+
+		return VStack (alignment: .leading) {
+			Text("Next Near Earth Object:")
+				.font(.title2)
+			Text("\(nextNeoName)")
+			Text("\(nextNeoDistance)")
+			Text("\(nextNeoTime)")
+		}
+	}
+
 	var testingButtons: some View {
 		HStack {
 			Spacer()
@@ -182,6 +176,11 @@ struct NeoGraphView: View {
 			}
 			Spacer()
 		}
+		.hidden()
+	}
+
+	func neoTimeInterval(_ neo: Neo?) -> TimeInterval {
+		neo?.closestApproachDate.timeIntervalSince(viewModel.lastStartTime) ?? 0.0
 	}
 }
 
@@ -197,9 +196,9 @@ private struct FullScreenBlackTransparencyView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
+	static var previews: some View {
 		NeoGraphView()
 			.preferredColorScheme(.dark)
-    }
+	}
 }
 

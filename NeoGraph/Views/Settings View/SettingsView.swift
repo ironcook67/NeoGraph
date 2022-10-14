@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsView: View {
 	@State private var apiKey = appServices.apiKey
 
-    var body: some View {
+	var body: some View {
 		List {
 			Text("This app uses NASA's servers to get Near Earth Object details. The demo api key is DEMO_KEY and is limited to 30 requests per hour (which is fine for viewing the data on this app.)")
 
@@ -29,21 +29,20 @@ struct SettingsView: View {
 			Section(header: Text("NASA API")) {
 				TextField("API_KEY", text: $apiKey, onCommit: {
 					appServices.apiKey = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
-					print("**\(appServices.apiKey)**")
 				})
-					.textFieldStyle(.roundedBorder)
-					.keyboardType(.alphabet)
-					.disableAutocorrection(true)
-					.autocapitalization(.none)
+				.textFieldStyle(.roundedBorder)
+				.keyboardType(.alphabet)
+				.disableAutocorrection(true)
+				.autocapitalization(.none)
 			}
 		}
-    }
+	}
 }
 
 struct Settings_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView()
-    }
+	static var previews: some View {
+		SettingsView()
+	}
 }
 
 private struct NetworkActionButton: View {
