@@ -22,7 +22,6 @@ class DataManager: ObservableObject {
 
 	func filterNeosByDate(_ neos: [Neo], by range: ClosedRange<Date>) -> [Neo] {
 		// Filter out the points in the passed date range
-		print("filterNeosByDate", "\(range)")
 		return neos.filter { range.contains($0.closestApproachDate) }
 	}
 

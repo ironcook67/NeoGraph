@@ -12,37 +12,6 @@ struct NeoGraphView: View {
 	@StateObject var viewModel = ViewModel()
 	@State private var showPreferences = false
 
-	func emptySpace(_ chartProxy: ChartProxy) -> CGRect {
-		var origin: CGPoint = CGPoint(x: 0, y: 0)
-		var size: CGSize = .init(width: 0, height: 0)
-
-		var maxX: CGFloat = 0
-		var maxY: CGFloat = 0
-
-		viewModel.neos.forEach({ neo in
-			let x = neo.closestApproachDate.timeIntervalSince(viewModel.lastStartTime)
-			let y = neo.missDistance.value
-
-			if y > origin.y {
-				origin.y = y
-				origin.x = min(origin.x, x)
-			}
-
-			maxY = max(maxY, y)
-			maxX = max(maxX, x)
-		})
-
-		print("max, min", maxX, maxY)
-
-		let chartSize = chartProxy.plotAreaSize
-		print("chartSize", chartSize.width, chartSize.height)
-
-		size = CGSize(width: chartSize.width - maxX, height: chartSize.width - maxY)
-
-		print("graph limits", "\(origin.x), \(origin.y)", "\(size.width), \(size.height)")
-		return CGRect(origin: origin, size: size)
-	}
-
 	var body: some View {
 		ZStack {
 			VStack {
@@ -72,12 +41,6 @@ struct NeoGraphView: View {
 										.position(CGPoint(x: xMoon, y: yMoon.y))
 								}
 							}
-
-							//							Rectangle()
-							//								.frame(width: empty.width*0.9, height: empty.height*0.9)
-							//								.position(x: empty.origin.x, y: empty.origin.y)
-							//								.background(Color.white)
-							//								.opacity(0.4)
 						}
 						.chartXAxis(.hidden)
 						.chartYScale(domain: 100_000...100_000_000, type: .log)
@@ -85,8 +48,6 @@ struct NeoGraphView: View {
 					}
 					.animation(.linear, value: viewModel.neos)
 				}
-
-				testingButtons
 			}
 			if viewModel.isShowingHelpModal {
 				FullScreenBlackTransparencyView()
@@ -156,31 +117,6 @@ struct NeoGraphView: View {
 					.frame(height: 100)
 					.offset(y: 40)
 			}
-		}
-	}
-
-	var testingButtons: some View {
-		HStack {
-			Spacer()
-			Button {
-				Task { await viewModel.decrement() }
-			} label: {
-				Text("-")
-					.frame(width: 40, height: 20)
-			}
-			Button {
-				Task { await viewModel.nextNeo() }
-			} label: {
-				Image(systemName: "plus.circle")
-					.frame(width: 40, height: 20)
-			}
-			Button {
-				Task { await viewModel.increment() }
-			} label: {
-				Text("+")
-					.frame(width: 40, height: 20)
-			}
-			Spacer()
 		}
 	}
 }

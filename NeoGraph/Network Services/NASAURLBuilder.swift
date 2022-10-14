@@ -11,7 +11,6 @@ struct NASAURLBuilder {
 	static let DEMO_KEY = "DEMO_KEY"
 
 	static var prefix: String {
-		print("Using API+KEY = \(appServices.apiKey)")
 		return "https://api.nasa.gov/neo/rest/v1/feed?api_key=\(appServices.apiKey)"
 	}
 

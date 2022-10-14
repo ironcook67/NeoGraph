@@ -29,7 +29,6 @@ struct SettingsView: View {
 			Section(header: Text("NASA API")) {
 				TextField("API_KEY", text: $apiKey, onCommit: {
 					appServices.apiKey = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
-					print("**\(appServices.apiKey)**")
 				})
 					.textFieldStyle(.roundedBorder)
 					.keyboardType(.alphabet)

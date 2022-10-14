@@ -36,7 +36,6 @@ extension NeoGraphView {
 
 			neoDump()
 
-			print("attempt 0: \(startDate.formatted()) to \(endDate.formatted())")
 			foundNeos = appServices.dataManager.filterNeosByDate(neos, by: midDate ... endDate)
 			if foundNeos.first != nil {
 				let neo = foundNeos.sorted().first!
@@ -48,7 +47,6 @@ extension NeoGraphView {
 				retrys += 1
 				startDate = endDate
 				endDate = startDate.offsetBy(days: 1, seconds: 0)
-				print("attempt \(retrys): \(startDate.formatted()) to \(endDate.formatted())")
 				let fetchedNeos = await appServices.dataManager.getNeos(forRange: startDate ... endDate)
 				foundNeos = appServices.dataManager.filterNeosByDate(fetchedNeos, by: startDate ... endDate)
 			}
@@ -67,27 +65,9 @@ extension NeoGraphView {
 		}
 
 		func loadData(_ date: Date) async {
-			print("loadData for \(date)")
 			lastStartTime = date.offsetBy(days: 0, hours: -12)
 			let dateToShow = lastStartTime
 			let dateToShowEnd = dateToShow.offsetBy(days: 1, hours: 0)
-			neos = await appServices.dataManager.getNeos(forRange: dateToShow...dateToShowEnd)
-		}
-
-		// MARK: - Testing
-		func increment() async {
-			lastStartTime = lastStartTime.offsetBy(days: 0, hours: 1)
-			let dateToShow = lastStartTime
-			let dateToShowEnd = dateToShow.offsetBy(days: 1, seconds: -1)
-			print("Showing: \(dateToShow)")
-			neos = await appServices.dataManager.getNeos(forRange: dateToShow...dateToShowEnd)
-		}
-
-		func decrement() async {
-			lastStartTime = lastStartTime.offsetBy(days: 0, hours: -1)
-			let dateToShow = lastStartTime
-			let dateToShowEnd = dateToShow.offsetBy(days: 1, seconds: -1)
-			print("Showing: \(dateToShow)")
 			neos = await appServices.dataManager.getNeos(forRange: dateToShow...dateToShowEnd)
 		}
 	}

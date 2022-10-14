@@ -30,6 +30,4 @@ class AppServices: Services {
 	}
 }
 
-// Make a global variable until a better way is found.
-// Todo: Change this before releasing
 var appServices = AppServices()
